@@ -48,7 +48,7 @@ class Card:
         """
         Cards have no default effect.
         """
-        return
+        return 0
 
     def __repr__(self):
         """
@@ -80,8 +80,6 @@ class Player:
         self.deck = deck
         self.name = name
         self.hand = [self.deck.draw()for _ in range (5)]
-
-
 
     def draw(self):
         """Draw a card from the player's deck and add it to their hand.
@@ -221,16 +219,18 @@ class ProfessorCard(Card):
             card.attack += new_attack
             card.defense += new_defense
 
-        for card in opponent.deck.cards:
-            if opponent_card.attack == card.attack and opponent_card.defense == card.defense:
-                opponent.deck.cards.remove(card)
-
+        i = 0
+        while i<len(opponent.deck.cards):
+            this_opponent = opponent.deck.cards[i]
+            if opponent_card.attack == this_opponent.attack and opponent_card.defense == this_opponent.defense:
+                opponent.deck.cards.remove(this_opponent)
+                i-=1
+            i+=1
 
         discarded = orig_opponent_deck_length - len(opponent.deck.cards)
         if discarded:
             #Uncomment the line below when you've finished implementing this method!
             print('{} cards were discarded from {}\'s deck!'.format(discarded, opponent.name))
-            return
 
     def copy(self):
         return ProfessorCard(self.name, self.attack, self.defense)
